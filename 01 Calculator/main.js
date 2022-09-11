@@ -17,12 +17,18 @@ const calculatorHistory = document.querySelector(".history");
 const historyBtn = document.querySelector(".history-btn");
 
 let result = "";
+let index = currentNumber.innerHTML.length;
 
 function displayNumbers() {
   if (this.textContent === "." && currentNumber.innerHTML.includes(".")) {
     return;
   }
-  if (this.textContent === "." && currentNumber.innerHTML === "") {
+  if (
+    (this.textContent === "." && currentNumber.innerHTML === "") ||
+    (currentNumber.innerHTML === "0" && this.textContent === "0") ||
+    (currentNumber.innerHTML === "0" && this.textContent === "00") ||
+    (currentNumber.innerHTML === "" && this.textContent === "00")
+  ) {
     return (currentNumber.innerHTML = "0.");
   }
 
@@ -30,6 +36,9 @@ function displayNumbers() {
 }
 
 function operate() {
+  if (currentNumber.innerHTML[index - 1] === ".") {
+    return;
+  }
   if (currentNumber.innerHTML === "-" && this.textContent === "-") {
     return;
   }
@@ -50,7 +59,14 @@ function operate() {
 }
 
 function showResult() {
-  if (currentNumber.innerHTML === "" && previousNumber.innerHTML === "") {
+  index = currentNumber.innerHTML.length;
+  if (
+    (currentNumber.innerHTML === "" && previousNumber.innerHTML === "") ||
+    currentNumber.innerHTML[index - 1] === "." ||
+    previousNumber.innerHTML === "" ||
+    (currentNumber.innerHTML === "" && previousNumber.innerHTML !== "") ||
+    (Number(currentNumber.innerHTML) === 0 && mathSign.innerHTML === ":")
+  ) {
     return;
   }
   let a = Number(currentNumber.innerHTML);
